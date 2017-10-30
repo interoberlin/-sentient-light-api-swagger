@@ -1,0 +1,13 @@
+export * from './BluetoothCharacteristicApi';
+import { BluetoothCharacteristicApi } from './BluetoothCharacteristicApi';
+export * from './BluetoothDeviceApi';
+import { BluetoothDeviceApi } from './BluetoothDeviceApi';
+export * from './BluetoothManagerApi';
+import { BluetoothManagerApi } from './BluetoothManagerApi';
+export * from './BluetoothServiceApi';
+import { BluetoothServiceApi } from './BluetoothServiceApi';
+export * from './FloorSensorApi';
+import { FloorSensorApi } from './FloorSensorApi';
+export * from './LedActorApi';
+import { LedActorApi } from './LedActorApi';
+export const APIS = [BluetoothCharacteristicApi, BluetoothDeviceApi, BluetoothManagerApi, BluetoothServiceApi, FloorSensorApi, LedActorApi];

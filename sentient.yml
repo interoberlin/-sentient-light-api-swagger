@@ -1,0 +1,466 @@
+swagger: "2.0"
+info:
+  description: "This is the API description of Interoberlin Sentient Light"
+  version: "1.0.0"
+  title: "Swagger Sentient Light"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "florian.schwanz@interoberlin.de"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "sentient.interoberlin.de"
+basePath: "/v1"
+tags:
+- name: "sentient"
+  description: "Sentient Light API"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+schemes:
+- "http"
+paths:
+  /floorSensor/{id}/subscribe:
+    get:
+      tags:
+      - "floor sensor"
+      summary: "Subscribes to a floor sensor's value"
+      description: ""
+      operationId: "subscribe"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id of the floor sensor."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/FloorSensor"
+        400:
+          description: "invalid id supplied"
+        404:
+          description: "floor sensor not found"
+  /floorSensors/subscribe:
+    get:
+      tags:
+      - "floor sensor"
+      summary: "Subscribes to all floor sensors' values"
+      description: ""
+      operationId: "subscribeAll"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/FloorSensor"
+        400:
+          description: "invalid id supplied"
+        404:
+          description: "floor sensor not found"
+  /ledActor/{id}/writeValue:
+    post:
+      tags:
+      - "led actor"
+      summary: "Writes a value to a given led"
+      description: ""
+      operationId: "writeLED"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id of the LED actor."
+        required: true
+        type: "string"
+      - name: "value"
+        in: "formData"
+        description: "Value to be written"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid id supplied"
+        404:
+          description: "led actor not found"
+  /bluetoothManager/startDiscovery:
+   get:
+      tags:
+      - "bluetooth manager"
+      summary: "Starts discovery"
+      description: ""
+      operationId: "startDiscovery"
+      responses:
+        200:
+          description: "successful operation"
+        404:
+          description: "discovery could not be started"
+  /bluetoothManager/stopDiscovery:
+    get:
+      tags:
+      - "bluetooth manager"
+      summary: "Stops discovery"
+      description: ""
+      operationId: "stopDiscovery"
+      responses:
+        200:
+          description: "successful operation"
+        404:
+          description: "discovery could not be stopped"
+  /bluetoothManager/devices:
+    get:
+      tags:
+      - "bluetooth manager"
+      summary: "Returns bluetooth devices"
+      description: ""
+      operationId: "getDevices"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BluetoothDevice"
+  /bluetoothDevice/{uuid}:
+    get:
+      tags:
+      - "bluetooth device"
+      summary: "Get bluetooth device by uuid"
+      description: ""
+      operationId: "getBluetoothDevice"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth device. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BluetoothDevice"
+        400:
+          description: "invalid id supplied"
+        404:
+          description: "bluetooth device not found"
+  /bluetoothDevice/{uuid}/connect:
+    get:
+      tags:
+      - "bluetooth device"
+      summary: "Connects bluetooth device"
+      description: ""
+      operationId: "connect"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth device. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth device not found"
+  /bluetoothDevice/{uuid}/disconnect:
+    get:
+      tags:
+      - "bluetooth device"
+      summary: "Disconnects bluetooth device"
+      description: ""
+      operationId: "disconnect"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth device. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth device not found"
+  /bluetoothDevice/{uuid}/pair:
+    get:
+      tags:
+      - "bluetooth device"
+      summary: "Pairs bluetooth device"
+      description: ""
+      operationId: "pair"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth device. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth device not found"
+  /bluetoothDevice/{uuid}/services:
+    get:
+      tags:
+      - "bluetooth manager"
+      summary: "Returns bluetooth device's services"
+      description: ""
+      operationId: "getServices"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth service. "
+        required: true
+        type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BluetoothGattService"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth device not found"
+  /bluetoothService/{uuid}:
+    get:
+      tags:
+      - "bluetooth service"
+      summary: "Get bluetooth service by uuid"
+      description: ""
+      operationId: "getBluetoothGattService"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth device. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BluetoothGattService"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth service not found"
+  /bluetoothService/{uuid}/characteristics:
+    get:
+      tags:
+      - "bluetooth characteristic"
+      summary: "Returns bluetooth service's characteristics"
+      description: ""
+      operationId: "getCharacteristics"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth service. "
+        required: true
+        type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BluetoothGattCharacteristic"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth service not found"
+  /bluetoothCharacteristic/{uuid}/:
+    get:
+      tags:
+      - "bluetooth characteristic"
+      summary: "Get bluetooth characteristic by uuid"
+      description: ""
+      operationId: "getBluetoothGattCharacteristic"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth characteristic. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BluetoothGattCharacteristic"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth service not found"
+  /bluetoothCharacteristic/{uuid}/readValue:
+    get:
+      tags:
+      - "bluetooth characteristic"
+      summary: "Reads a bluetooth characteristic's value"
+      description: ""
+      operationId: "readValue"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth characteristic. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BluetoothGattCharacteristic"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth characteristic not found"
+  /bluetoothCharacteristic/{uuid}/enableValueNotification:
+    get:
+      tags:
+      - "bluetooth characteristic"
+      summary: "Enables value notification of a bluetooth characteristic"
+      description: ""
+      operationId: "enableValueNotification"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth characteristic. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth characteristic not found"
+  /bluetoothCharacteristic/{uuid}/disableValueNotification:
+    get:
+      tags:
+      - "bluetooth characteristic"
+      summary: "Disables value notification of a bluetooth characteristic"
+      description: ""
+      operationId: "disableValueNotification"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth characteristic. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth characteristic not found"
+  /bluetoothCharacteristic/{uuid}/writeValue:
+    post:
+      tags:
+      - "bluetooth characteristic"
+      summary: "Writes a value to a given characteristic"
+      description: ""
+      operationId: "writeValue"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "The uuid of the bluetooth characteristic. "
+        required: true
+        type: "string"
+      - name: "value"
+        in: "formData"
+        description: "Value to be written in characteristic"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid uuid supplied"
+        404:
+          description: "bluetooth characteristic not found"
+definitions:
+  FloorSensor:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+      value:
+        type: "string"
+  BluetoothDevice:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+      services:
+        type: "array"
+        items:
+          $ref: "#/definitions/BluetoothGattService"
+      address:
+        type: "string"
+      name:
+        type: "string"
+      alias:
+        type: "string"
+      paired:
+        type: "boolean"
+      trusted:
+        type: "boolean"
+      blocked:
+        type: "boolean"
+      rssi:
+        type: "integer"
+      txPower:
+        type: "integer"
+  BluetoothGattService:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+      primary:
+        type: "boolean"
+      characteristics:
+        type: "array"
+        items:
+          $ref: "#/definitions/BluetoothGattCharacteristic"
+  BluetoothGattCharacteristic:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+      value:
+        type: "string"
+      notifying:
+        type: "boolean"
+      characteristics:
+        type: "array"
+        items:
+          type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
